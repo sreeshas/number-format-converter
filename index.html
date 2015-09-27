@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Converter</title>
+  <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+  <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
+
+    <script>
+    (function(){
+
+      var convertBase = function (num) {
+        this.from = function (baseFrom) {
+          this.to = function (baseTo) {
+            return parseInt(num, baseFrom).toString(baseTo);
+          };
+          return this;
+        };
+        return this;
+      };
+
+      // binary to decimal
+      convertBase.bin2dec = function (num) {
+        return convertBase(num).from(2).to(10);
+      };
+
+      // binary to hexadecimal
+      convertBase.bin2hex = function (num) {
+        return convertBase(num).from(2).to(16);
+      };
+
+      // decimal to binary
+      convertBase.dec2bin = function (num) {
+        return convertBase(num).from(10).to(2);
+      };
+
+      // decimal to hexadecimal
+      this.dec2hex = function (num) {
+        return convertBase(num).from(10).to(16);
+      };
+
+      // hexadecimal to binary
+      convertBase.hex2bin = function (num) {
+        return convertBase(num).from(16).to(2);
+      };
+
+      // hexadecimal to decimal
+      convertBase.hex2dec = function (num) {
+        return convertBase(num).from(16).to(10);
+      };
+
+      this.convertBase = convertBase;
+    })(this);
+
+  </script>
+  <script>
+
+    function initialize(){
+      $(".dropdown-menu li a").click(function(){
+        $(this).parents(".input-group-btn").find('.btn').html($(this).text() + ' <span class="caret"></span>');
+        $(this).parents(".input-group-btn").find('.btn').val($(this).data('value'));
+        document.getElementById('userinput').placeholder = 'Enter the input value'
+        document.getElementById('userinput').value="";
+        resetOutput();
+      });
+
+
+    }
+    function resetOutput(){
+      document.getElementById('binaryOutput').innerHTML=''
+      document.getElementById('decimalOutput').innerHTML=''
+      document.getElementById('hexOutput').innerHTML=''
+    }
+    function onUserInputChange(){
+      resetOutput()
+      var format = document.getElementById('userinputformat').value
+      var inputVal = document.getElementById('userinput').value;
+      if(!inputVal){
+        return
+      }
+      switch(format) {
+        case "binary":
+          console.log("Input is binary")
+          document.getElementById('binaryOutput').innerHTML = inputVal
+          document.getElementById('decimalOutput').innerHTML = convertBase.bin2dec(inputVal)
+          document.getElementById('hexOutput').innerHTML =convertBase.bin2hex(inputVal)
+          break;
+        case "decimal":
+          console.log("Input is decimal")
+          document.getElementById('binaryOutput').innerHTML = convertBase.dec2bin(inputVal)
+            document.getElementById('decimalOutput').innerHTML = inputVal
+              document.getElementById('hexOutput').innerHTML =convertBase.dec2hex(inputVal)
+          break;
+        case "hex":
+          console.log("Input is hex")
+          document.getElementById('binaryOutput').innerHTML =convertBase.hex2bin(inputVal)
+            document.getElementById('decimalOutput').innerHTML = convertBase.hex2dec(inputVal)
+              document.getElementById('hexOutput').innerHTML = inputVal
+          break;
+        default:
+          console.log("Invalid input")
+      }
+      console.log(document.getElementById('userinputformat').value)
+      console.log(document.getElementById('userinput').value);
+    }
+
+  </script>
+</head>
+<body onload="initialize()">
+<div class="page-header">
+  <h1 align="center">Ultimate Number Converter </h1>
+  <h2 align="center"><small>Convert a number between binary, decimal and hexadecimal formats</small></h2>
+</div>
+  <div class="panel panel-default">
+    <div class="panel-heading">
+      <h3 class="panel-title">Input</h3>
+    </div>
+    <div class="panel-body">
+      <div class="input-group">
+        <div class="input-group-btn">
+          <button id="userinputformat" type="button" class="btn btn-default dropdown-toggle"
+                   data-toggle="dropdown"
+                   aria-haspopup="true"
+                   aria-expanded="false">Number Format <span class="caret"></span>
+          </button>
+          <ul class="dropdown-menu">
+            <li><a href="#" data-value="binary">Binary</a></li>
+            <li><a href="#" data-value="decimal">Decimal</a></li>
+            <li><a href="#" data-value="hex">Hex</a></li>
+          </ul>
+        </div><!-- /btn-group -->
+        <input placeholder="Choose a number format" id="userinput" onchange="onUserInputChange()" type="text" class="form-control" aria-label="...">
+      </div><!-- /input-group -->
+
+    </div>
+  </div>
+  <div class="panel panel-default">
+    <div class="panel-heading">
+      <h3 class="panel-title">Output</h3>
+    </div>
+    <div class="panel-body">
+      <!-- Table -->
+      <table  class="table table-striped" >
+        <thead>
+        <tr>
+          <th>Format</th>
+          <th>Value</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr>
+          <td>Binary</td>
+          <td id="binaryOutput"></td>
+        </tr>
+        <tr>
+          <td>Decimal</td>
+          <td id="decimalOutput"></td>
+        </tr>
+        <tr>
+          <td>Hex</td>
+          <td id="hexOutput"></td>
+        </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  </div>
+
+</body>
+</html>
