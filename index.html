@@ -120,7 +120,7 @@
     <div class="panel-body">
       <div class="input-group">
         <div class="input-group-btn">
-          <button id="userinputformat" type="button" class="btn btn-default dropdown-toggle"
+          <button id="userinputformat" type="button" class="btn btn-primary dropdown-toggle"
                    data-toggle="dropdown"
                    aria-haspopup="true"
                    aria-expanded="false">Number Format <span class="caret"></span>
@@ -133,7 +133,9 @@
         </div><!-- /btn-group -->
         <input placeholder="Choose a number format" id="userinput" onchange="onUserInputChange()" type="text" class="form-control" aria-label="...">
       </div><!-- /input-group -->
-
+    </div>
+    <div class="panel-footer">
+      <button type="button" class="btn btn-success" onclick="onUserInputChange()">Convert</button>
     </div>
   </div>
   <div class="panel panel-default">
